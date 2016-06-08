@@ -37,6 +37,7 @@ public:
   void setFilter(const CAN_filter_t &filter, uint8_t n);
   void end(void);
   int available(void);
+  int synchron(void);
   int write(const CAN_message_t &msg);
   int read(CAN_message_t &msg);
 
