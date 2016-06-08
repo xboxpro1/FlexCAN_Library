@@ -125,7 +125,7 @@ int FlexCAN::available(void)
 
 int FlexCAN::synchron(void)
 {
-  //In FIFO mode, the following interrupt flag signals availability of a frame
+  //Check if synchronized with the can bus
   return (FLEXCAN0_ESR1 & FLEXCAN_ESR_SYNCH)? 1:0;
 }
 
