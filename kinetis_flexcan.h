@@ -397,6 +397,7 @@ typedef volatile uint32_t vuint32_t;
 #define FLEXCAN_ESR_BIT1_ERR           (0x00008000)
 #define FLEXCAN_ESR_RWRN_INT           (0x00010000)
 #define FLEXCAN_ESR_TWRN_INT           (0x00020000)
+#define FLEXCAN_ESR_SYNCH              (0x00040000)
 #define FLEXCAN_ESR_get_fault_code(esr)	(((esr) & FLEXCAN_ESR_FLT_CONF_MASK)>>4)
 #define CAN_ERROR_ACTIVE				0
 #define CAN_ERROR_PASSIVE				1
