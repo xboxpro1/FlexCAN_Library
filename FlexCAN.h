@@ -30,7 +30,7 @@ private:
 
 public:
   FlexCAN();
-  void begin(uint8_t baud = 0, const CAN_filter_t &mask);
+  void begin(uint8_t baud, const CAN_filter_t &mask);
   inline void begin()
   {
     begin(CAN_125KBPS, defaultMask);
