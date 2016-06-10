@@ -29,11 +29,11 @@ private:
   struct CAN_filter_t defaultMask;
 
 public:
-  FlexCAN(uint8_t baud = 0);
-  void begin(const CAN_filter_t &mask);
+  FlexCAN();
+  void begin(uint8_t baud = 0, const CAN_filter_t &mask);
   inline void begin()
   {
-    begin(defaultMask);
+    begin(CAN_125KBPS, defaultMask);
   }
   void setFilter(const CAN_filter_t &filter, uint8_t n);
   void end(void);
