@@ -14,7 +14,7 @@
 Metro sysTimer = Metro(1);// milliseconds
 
 int led = 13;
-FlexCAN CANbus(500000);
+FlexCAN CANbus(CAN_500KBPS);
 static CAN_message_t msg,rxmsg;
 static uint8_t hex[17] = "0123456789abcdef";
 
