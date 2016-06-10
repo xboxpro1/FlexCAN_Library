@@ -10,7 +10,7 @@ static const int txBuffers = 8;
 static const int rxb = 0;
 
 // -------------------------------------------------------------
-FlexCAN::FlexCAN(uint32_t baud)
+FlexCAN::FlexCAN(uint8_t baud)
 {
   // set up the pins, 3=PTA12=CAN0_TX, 4=PTA13=CAN0_RX
   CORE_PIN3_CONFIG = PORT_PCR_MUX(2);
@@ -39,30 +39,79 @@ FlexCAN::FlexCAN(uint32_t baud)
   FLEXCAN0_MCR |= FLEXCAN_MCR_FEN;
 
   // segment splits and clock divisor based on baud rate
-  if ( 33333 == baud ) {
-    FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(2)
-                      | FLEXCAN_CTRL_PSEG1(1) | FLEXCAN_CTRL_PSEG2(1) | FLEXCAN_CTRL_PRESDIV(59));
-  } else if ( 50000 == baud ) {
-    FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
-                      | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(19));
-  } else if ( 100000 == baud ) {
-    FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
-                      | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(9));
-  } else if ( 250000 == baud ) {
-    FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
-                      | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(3));
-  } else if ( 500000 == baud ) {
-    FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
-                      | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(1));
-  } else if ( 1000000 == baud ) {
-    FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(0)
-                      | FLEXCAN_CTRL_PSEG1(1) | FLEXCAN_CTRL_PSEG2(1) | FLEXCAN_CTRL_PRESDIV(1));
-  } else { // 125000
-    FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
-                      | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(7));
+  
+  switch (baud){
+    
+    case (CAN_3K3BPS):
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(2)
+                          | FLEXCAN_CTRL_PSEG1(1) | FLEXCAN_CTRL_PSEG2(1) | FLEXCAN_CTRL_PRESDIV(59));
+    break;
+    
+    case (CAN_5KBPS):
+    
+    break;
+    
+    case (CAN_10KBPS):
+    
+    break;
+    
+    case (CAN_20KBPS):
+    
+    break;
+    
+    case (CAN_25KBPS):
+    
+    break;
+    
+    case (CAN_40KBPS):
+    
+    break;
+    
+    case (CAN_50KBPS):
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(19));
+    break;
+    
+    case (CAN_80KBPS):
+    
+    break;
+    
+    case (CAN_100KBPS):
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(9));
+    break;
+    
+    case (CAN_125KBPS):
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(7));
+    break;
+    
+    case (CAN_200KBPS):
+    
+    break;
+    
+    case (CAN_250KBPS):
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(3));
+    break;
+    
+    case (CAN_500KBPS):
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(1));
+    break;
+    
+    case (CAN_1000KBPS):
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(0)
+                          | FLEXCAN_CTRL_PSEG1(1) | FLEXCAN_CTRL_PSEG2(1) | FLEXCAN_CTRL_PRESDIV(1));
+    break;
+    
+    default:    // 125000
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(7));
+    break;
   }
-
-  // Default mask is allow everything
+  
+   // Default mask is allow everything
   defaultMask.rtr = 0;
   defaultMask.ext = 0;
   defaultMask.id = 0;
