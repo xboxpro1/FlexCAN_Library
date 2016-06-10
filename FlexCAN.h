@@ -29,7 +29,7 @@ private:
   struct CAN_filter_t defaultMask;
 
 public:
-  FlexCAN(uint32_t baud = 125000);
+  FlexCAN(uint8_t baud = 0);
   void begin(const CAN_filter_t &mask);
   inline void begin()
   {
