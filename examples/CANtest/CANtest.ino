@@ -14,7 +14,7 @@
 Metro sysTimer = Metro(1);// milliseconds
 
 int led = 13;
-FlexCAN CANbus(CAN_500KBPS);
+FlexCAN CANbus();
 static CAN_message_t msg,rxmsg;
 static uint8_t hex[17] = "0123456789abcdef";
 
@@ -39,7 +39,7 @@ static void hexDump(uint8_t dumpLen, uint8_t *bytePtr)
 // -------------------------------------------------------------
 void setup(void)
 {
-  CANbus.begin();
+  CANbus.begin(CAN_500KBPS, 0);
   pinMode(led, OUTPUT);
   digitalWrite(led, 1);
 
