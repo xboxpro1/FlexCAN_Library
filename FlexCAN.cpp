@@ -67,23 +67,28 @@ void FlexCAN::begin(uint8_t baud, const CAN_filter_t &mask)
     break;
     
     case (CAN_5KBPS):
-    
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(199));
     break;
     
     case (CAN_10KBPS):
-    
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(99));
     break;
     
     case (CAN_20KBPS):
-    
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(49));
     break;
     
     case (CAN_25KBPS):
-    
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(39));
     break;
     
     case (CAN_40KBPS):
-    
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(24));
     break;
     
     case (CAN_50KBPS):
@@ -92,7 +97,8 @@ void FlexCAN::begin(uint8_t baud, const CAN_filter_t &mask)
     break;
     
     case (CAN_80KBPS):
-    
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(12));
     break;
     
     case (CAN_100KBPS):
@@ -106,7 +112,8 @@ void FlexCAN::begin(uint8_t baud, const CAN_filter_t &mask)
     break;
     
     case (CAN_200KBPS):
-    
+        FLEXCAN0_CTRL1 = (FLEXCAN_CTRL_PROPSEG(2) | FLEXCAN_CTRL_RJW(1)
+                          | FLEXCAN_CTRL_PSEG1(7) | FLEXCAN_CTRL_PSEG2(3) | FLEXCAN_CTRL_PRESDIV(4));
     break;
     
     case (CAN_250KBPS):
