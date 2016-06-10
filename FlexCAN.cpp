@@ -10,7 +10,7 @@ static const int txBuffers = 8;
 static const int rxb = 0;
 
 // -------------------------------------------------------------
-FlexCAN::FlexCAN(uint8_t baud)
+FlexCAN::FlexCAN()
 {
   // set up the pins, 3=PTA12=CAN0_TX, 4=PTA13=CAN0_RX
   CORE_PIN3_CONFIG = PORT_PCR_MUX(2);
@@ -38,8 +38,27 @@ FlexCAN::FlexCAN(uint8_t baud)
   //enable RX FIFO
   FLEXCAN0_MCR |= FLEXCAN_MCR_FEN;
 
+   // Default mask is allow everything
+  defaultMask.rtr = 0;
+  defaultMask.ext = 0;
+  defaultMask.id = 0;
+}
+
+
+// -------------------------------------------------------------
+void FlexCAN::end(void)
+{
+  // enter freeze mode
+  FLEXCAN0_MCR |= (FLEXCAN_MCR_HALT);
+  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK))
+    ;
+}
+
+
+// -------------------------------------------------------------
+void FlexCAN::begin(uint8_t baud, const CAN_filter_t &mask)
+{
   // segment splits and clock divisor based on baud rate
-  
   switch (baud){
     
     case (CAN_3K3BPS):
@@ -111,26 +130,6 @@ FlexCAN::FlexCAN(uint8_t baud)
     break;
   }
   
-   // Default mask is allow everything
-  defaultMask.rtr = 0;
-  defaultMask.ext = 0;
-  defaultMask.id = 0;
-}
-
-
-// -------------------------------------------------------------
-void FlexCAN::end(void)
-{
-  // enter freeze mode
-  FLEXCAN0_MCR |= (FLEXCAN_MCR_HALT);
-  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK))
-    ;
-}
-
-
-// -------------------------------------------------------------
-void FlexCAN::begin(const CAN_filter_t &mask)
-{
   FLEXCAN0_RXMGMASK = 0;
 
   //enable reception of all messages that fit the mask
