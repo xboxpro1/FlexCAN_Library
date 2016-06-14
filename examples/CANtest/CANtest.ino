@@ -13,7 +13,7 @@
 
 Metro sysTimer = Metro(1);// milliseconds
 
-int led = 13;
+int led = 20;
 FlexCAN CANbus();
 static CAN_message_t msg,rxmsg;
 static uint8_t hex[17] = "0123456789abcdef";
@@ -39,14 +39,16 @@ static void hexDump(uint8_t dumpLen, uint8_t *bytePtr)
 // -------------------------------------------------------------
 void setup(void)
 {
-  CANbus.begin(CAN_500KBPS, 0);
+  CANbus.setMask();
+  CANbus.begin();
   pinMode(led, OUTPUT);
   digitalWrite(led, 1);
 
   delay(1000);
-  Serial.println(F("Hello Teensy 3.1 CAN Test."));
+  Serial.println(F("Hello Teensy 3.2 CAN Test."));
 
   sysTimer.reset();
+  rxTimer = 3;                //milliseconds
 }
 
 
@@ -63,41 +65,15 @@ void loop(void)
     }
   }
 
-  // if not time-delayed, read CAN messages and print 1st byte
+  // if not time-delayed, read CAN messages and print
   if ( !rxTimer ) {
     while ( CANbus.read(rxmsg) ) {
-      //hexDump( sizeof(rxmsg), (uint8_t *)&rxmsg );
-      Serial.write(rxmsg.buf[0]);
-      rxCount++;
+      hexDump( sizeof(rxmsg), (uint8_t *)&rxmsg );
+      //Serial.write(rxmsg.buf[0]);
+      rxTimer = 3;    //milliseconds
     }
   }
 
-  // insert a time delay between transmissions
-  if ( !txTimer ) {
-    // if frames were received, print the count
-    if ( rxCount ) {
-      Serial.write('=');
-      Serial.print(rxCount);
-      rxCount = 0;
-    }
-    txTimer = 100;//milliseconds
-    msg.len = 8;
-    msg.id = 0x222;
-    for( int idx=0; idx<8; ++idx ) {
-      msg.buf[idx] = '0'+idx;
-    }
-    // send 6 at a time to force tx buffering
-    txCount = 6;
-    digitalWrite(led, 1);
-    Serial.println(".");
-    while ( txCount-- ) {
-      CANbus.write(msg);
-      msg.buf[0]++;
-    }
-    digitalWrite(led, 0);
-    // time delay to force some rx data queue use
-    rxTimer = 3;//milliseconds
-  }
-
+  
 }
 
