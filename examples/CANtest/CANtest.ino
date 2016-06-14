@@ -8,14 +8,14 @@
 // Serial is used to print the ongoing status.
 //
 
-#include <Metro.h>
-#include <FlexCAN.h>
+#include "Metro.h"
+#include "FlexCAN.h"
 
 Metro sysTimer = Metro(1);// milliseconds
 
-int led = 20;
-FlexCAN CANbus();
-static CAN_message_t msg,rxmsg;
+int led = 17;
+FlexCAN CANbus;
+static CAN_message_t rxmsg;
 static uint8_t hex[17] = "0123456789abcdef";
 
 int txCount,rxCount;
