@@ -56,8 +56,12 @@ void FlexCAN::end(void)
 
 
 // -------------------------------------------------------------
-void FlexCAN::begin(uint8_t baud, const CAN_filter_t &mask)
+void FlexCAN::begin(uint8_t baud)
 {
+  // enter freeze mode
+  FLEXCAN0_MCR |= (FLEXCAN_MCR_HALT);
+  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK));
+  
   // segment splits and clock divisor based on baud rate
   switch (baud){
     
@@ -137,6 +141,27 @@ void FlexCAN::begin(uint8_t baud, const CAN_filter_t &mask)
     break;
   }
   
+  // start the CAN
+  FLEXCAN0_MCR &= ~(FLEXCAN_MCR_HALT);
+  // wait till exit of freeze mode
+  while(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK);
+
+  // wait till ready
+  while(FLEXCAN0_MCR & FLEXCAN_MCR_NOT_RDY);
+
+  //set tx buffers to inactive
+  for (int i = txb; i < txb + txBuffers; i++) {
+    FLEXCAN0_MBn_CS(i) = FLEXCAN_MB_CS_CODE(FLEXCAN_MB_CODE_TX_INACTIVE);
+  }
+}
+
+// -------------------------------------------------------------
+void FlexCAN::setMask(const CAN_filter_t &mask)
+{
+  // enter freeze mode
+  FLEXCAN0_MCR |= (FLEXCAN_MCR_HALT);
+  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK));
+  
   FLEXCAN0_RXMGMASK = 0;
 
   //enable reception of all messages that fit the mask
@@ -158,6 +183,7 @@ void FlexCAN::begin(uint8_t baud, const CAN_filter_t &mask)
   for (int i = txb; i < txb + txBuffers; i++) {
     FLEXCAN0_MBn_CS(i) = FLEXCAN_MB_CS_CODE(FLEXCAN_MB_CODE_TX_INACTIVE);
   }
+  
 }
 
 
