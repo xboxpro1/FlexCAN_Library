@@ -42,6 +42,10 @@ FlexCAN::FlexCAN()
   defaultMask.rtr = 0;
   defaultMask.ext = 0;
   defaultMask.id = 0;
+  
+   //enable reception of all messages
+  FLEXCAN0_RXMGMASK = 0;
+  FLEXCAN0_RXFGMASK = ((defaultMask.rtr?1:0) << 31) | ((defaultMask.ext?1:0) << 30) | (FLEXCAN_MB_ID_IDSTD(defaultMask.id) << 1);
 }
 
 
