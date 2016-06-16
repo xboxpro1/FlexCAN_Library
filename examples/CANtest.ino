@@ -39,7 +39,6 @@ static void hexDump(uint8_t dumpLen, uint8_t *bytePtr)
 // -------------------------------------------------------------
 void setup(void)
 {
-  CANbus.setMask();
   CANbus.begin();
   pinMode(led, OUTPUT);
   digitalWrite(led, 1);
