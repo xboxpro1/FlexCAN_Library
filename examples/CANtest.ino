@@ -18,8 +18,7 @@ FlexCAN CANbus;
 static CAN_message_t rxmsg;
 static uint8_t hex[17] = "0123456789abcdef";
 
-int txCount,rxCount;
-unsigned int txTimer,rxTimer;
+unsigned int rxTimer;
 
 
 // -------------------------------------------------------------
@@ -56,12 +55,7 @@ void loop(void)
 {
   // service software timers based on Metro tick
   if ( sysTimer.check() ) {
-    if ( txTimer ) {
-      --txTimer;
-    }
-    if ( rxTimer ) {
-      --rxTimer;
-    }
+    --rxTimer;
   }
 
   // if not time-delayed, read CAN messages and print
