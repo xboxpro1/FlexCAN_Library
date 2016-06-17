@@ -9,11 +9,11 @@
 #include <stdint.h>
 
 /* Bus speed definitions */
-#define CAN_3K3BPS   1
-#define CAN_5KBPS    2
-#define CAN_10KBPS   3
-#define CAN_20KBPS   4
-#define CAN_25KBPS   5 
+#define CAN_5KBPS    1
+#define CAN_10KBPS   2
+#define CAN_20KBPS   3
+#define CAN_25KBPS   4 
+#define CAN_33KBPS   5
 #define CAN_40KBPS   6
 #define CAN_50KBPS   7
 #define CAN_80KBPS   8
