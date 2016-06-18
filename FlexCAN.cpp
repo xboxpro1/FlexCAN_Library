@@ -23,15 +23,15 @@ FlexCAN::FlexCAN()
   // enable CAN
   FLEXCAN0_MCR |=  FLEXCAN_MCR_FRZ;
   FLEXCAN0_MCR &= ~FLEXCAN_MCR_MDIS;
-  while(FLEXCAN0_MCR & FLEXCAN_MCR_LPM_ACK)
-    ;
+  while(FLEXCAN0_MCR & FLEXCAN_MCR_LPM_ACK);
+  
   // soft reset
   FLEXCAN0_MCR ^=  FLEXCAN_MCR_SOFT_RST;
-  while(FLEXCAN0_MCR & FLEXCAN_MCR_SOFT_RST)
-    ;
+  while(FLEXCAN0_MCR & FLEXCAN_MCR_SOFT_RST);
+  
   // wait for freeze ack
-  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK))
-    ;
+  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK));
+  
   // disable self-reception
   FLEXCAN0_MCR |= FLEXCAN_MCR_SRX_DIS;
 
@@ -54,8 +54,36 @@ void FlexCAN::end(void)
 {
   // enter freeze mode
   FLEXCAN0_MCR |= (FLEXCAN_MCR_HALT);
-  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK))
-    ;
+  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK));
+}
+
+void FlexCAN::reset(void)
+{
+  // enter freeze mode
+  FLEXCAN0_MCR |= (FLEXCAN_MCR_HALT);
+  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK));
+  
+  // soft reset
+  FLEXCAN0_MCR ^=  FLEXCAN_MCR_SOFT_RST;
+  while(FLEXCAN0_MCR & FLEXCAN_MCR_SOFT_RST);
+  
+  // wait for freeze ack
+  while(!(FLEXCAN0_MCR & FLEXCAN_MCR_FRZ_ACK));
+  
+  // disable self-reception
+  FLEXCAN0_MCR |= FLEXCAN_MCR_SRX_DIS;
+
+  //enable RX FIFO
+  FLEXCAN0_MCR |= FLEXCAN_MCR_FEN;
+
+   // Default mask is allow everything
+  defaultMask.rtr = 0;
+  defaultMask.ext = 0;
+  defaultMask.id = 0;
+  
+   //enable reception of all messages
+  FLEXCAN0_RXMGMASK = 0;
+  FLEXCAN0_RXFGMASK = ((defaultMask.rtr?1:0) << 31) | ((defaultMask.ext?1:0) << 30) | (FLEXCAN_MB_ID_IDSTD(defaultMask.id) << 1);
 }
 
 
