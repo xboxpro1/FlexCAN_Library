@@ -9,7 +9,7 @@ String dataIN = "";
 String crIN;
 short CR = 10;
 int led = 13;
-int cbindex;
+int cbindex = 255;
 boolean rx = false;
 FlexCAN can;
 static CAN_message_t rxmsg;
@@ -55,7 +55,7 @@ void loop(void)
       rx = false;
    }
  }
- if (rx == true){
+ if (rx == true && cbindex != 255){
     if(1 == can.available()){
       can.read(rxmsg);
       Serial.print("PID: ");
