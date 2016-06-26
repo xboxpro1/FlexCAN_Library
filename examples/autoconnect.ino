@@ -45,10 +45,10 @@ void loop(void)
         }
     }
     
-   if(dataIN == 'r'){
+    else if(dataIN == 'r'){
       rx = true;
    }
-   if(dataIN == ""){
+    else{
       Serial.println("Press -> c <- for Auto Connect Test");
       Serial.println("Press -> r <- for Can RX Test");
       digitalWrite(led, 0);
