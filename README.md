@@ -36,7 +36,7 @@ Returns speedindex 1 - 18, 255 -> Error, CANbus not connected or speed is not av
 Disable the CAN from participating on the CANbus.  Pins remain assigned to the alternate function CAN0.
 
 **reset()**
-Reset the device and enter freeze mode.
+Softreset the device and enter freeze mode.
 
 **write(message)**
 Send a frame of up to 8 bytes using the given identifier.  **write()** will return 0 if no buffer was available for sending (see "Caller blocking" below).
