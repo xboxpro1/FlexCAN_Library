@@ -1,4 +1,4 @@
-Bus speed definition
+Bus speed definitions
 
 Const           Speed Index
 CAN_5KBPS          1 
