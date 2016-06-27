@@ -13,7 +13,7 @@ Note that CAN will normally require termination resistors.  These are located at
 
 Supported baud rates are 5000, 10000, 20000, 25000, 31250, 33333, 40000, 50000, 80000, 83333, 95000, 100000, 125000, 200000, 250000, 500000, 666666, and 1000000 bits per second.  If the baud rate is not specified it will default to 125000. Use given speedindex in:
 ###bus-speed-definitions.txt
-If you want to add another speed, use the Excel Sheet 
+If you want to add another speed, use the Excel sheet 
 ###can-timing.xls
 ![Can Timing](/can-timing.png)
 ###CAN Transceiver Options
