@@ -11,19 +11,26 @@ Even though the Teensy is operating on 3.3V, use of 5V transceivers may be an op
 
 Note that CAN will normally require termination resistors.  These are located at the two ends of a CAN bus to prevent reflections.  Do not add more terminators when connecting devices to an existing properly terminated CAN bus.
 
-Supported baud rates are 50000, 100000, 125000, 250000, 500000, and 1000000 bits per second.  If the baud rate is not specified it will default to 125000.
-
+Supported baud rates are 5000, 10000, 20000, 25000, 31250, 33333, 40000, 50000, 80000, 83333, 95000, 100000, 125000, 200000, 250000, 500000, 666666, and 1000000 bits per second.  If the baud rate is not specified it will default to 125000. Use given speedindex in:
+###bus-speed-definitions.txt
+If you want to add another speed, use the Excel Sheet 
+###can-timing.xls
+![Can Timing](/can-timing.png)
 ###CAN Transceiver Options
 Please add parts you are using successfully with Teensy 3.1 to this list.
 - TI SN65HVD230D on 3.3V (1MBPS)
 - TI SN65HVD232D / SN65HVD232QDQ1 on 3.3V (1MBPS)
 - NXP TJA1050T/VM,118 on the same 5V supply as the Teensy. (1MBPS)
-- Microchip MCP2551 on 5V (reported at 500KBPS)
+- Microchip MCP2551/2 on 5V (1MBPS)
 - Linear LT1796 on 5V (not speedtested)
 
 ###Driver API
-**begin()**
-Enable the CAN to start actively participating on the CANbus.
+**begin(speedindex)**
+Enable the CAN to start actively participating on the CANbus. Default speedindex is CAN_125KBPS.
+
+**connect(speedindex, check)**
+Enable the CAN to start actively participating on the CANbus with given speedindex. If check = 1 the device checks if there is frame available. If speedindex = 0, the device try an Auto Connect on the CANbus. Default (0, 0). See autoconnect.ino.
+Returns speedindex 1 - 18, 255 -> Error, CANbus not connected or speed is not available.
 
 **end()**
 Disable the CAN from participating on the CANbus.  Pins remain assigned to the alternate function CAN0.
@@ -32,6 +39,13 @@ Disable the CAN from participating on the CANbus.  Pins remain assigned to the a
 Send a frame of up to 8 bytes using the given identifier.  **write()** will return 0 if no buffer was available for sending (see "Caller blocking" below).
 
 message is a **CAN_message_t** type buffer structure.
+- uint32_t id; // can identifier
+- uint8_t ext; // identifier is extended
+- uint8_t req; // message is request
+- uint8_t len; // length of data
+- uint16_t timestamp; // receive frame timestamp
+- uint16_t timeout; // milliseconds, zero will disable waiting
+- uint8_t buf[8];   // 8 byte data buffer
 
 **read(message)**
 Receive a frame into "message" if available.  **read()** will return 1 if a frame was copied into the callers buffer, or 0 if no frame is available (see "Caller blocking" below).
@@ -39,14 +53,26 @@ Receive a frame into "message" if available.  **read()** will return 1 if a fram
 **available()**
 Returns 1 if at least one receive frame is waiting, or 0 if no frame is available.
 
+**synchron** 
+Returns 1 if the device is synchron with CANbus, or 0 if not synchron.
+
 ###Use of Optional RX Filtering
-**begin(mask)**
-Enable the CAN to start actively participating on the CANbus.  Enable reception of all messages that fit the mask.  This is a global mask that applies to all the receive filters.
+**setMask(mask)**
+Enable reception of all messages that fit the mask.  This is a global mask that applies to all the receive filters.
 
 **setFilter(filter, number)**
 Set the receive filter selected by number, 0-7.  When using filters it is required to set them all. If the application uses less than 8 filters, duplicate one filter for the unused ones.
 
 The mask and filter are **CAN_filter_t** type structures.
+- uint8_t rtr;    // request id
+- uint8_t ext;    // extended id
+- uint32_t id;    // id
+
+**clearMask()**
+Clear the mask to receive all frames.
+
+**clearFilter()**
+Clear filter from 0 - 7.
 
 ###Caller Blocking Support
 Support has been included for wait / blocking in both the **read()** and **write()** calls.
