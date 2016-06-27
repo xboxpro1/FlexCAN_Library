@@ -53,7 +53,7 @@ Receive a frame into "message" if available.  **read()** will return 1 if a fram
 **available()**
 Returns 1 if at least one receive frame is waiting, or 0 if no frame is available.
 
-**synchron** 
+**synchron()** 
 Returns 1 if the device is synchron with CANbus, or 0 if not synchron.
 
 ###Use of Optional RX Filtering
