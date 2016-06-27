@@ -64,9 +64,9 @@ Enable reception of all messages that fit the mask.  This is a global mask that 
 Set the receive filter selected by number, 0-7.  When using filters it is required to set them all. If the application uses less than 8 filters, duplicate one filter for the unused ones.
 
 The mask and filter are **CAN_filter_t** type structures.
-- uint8_t rtr;    // request id
-- uint8_t ext;    // extended id
-- uint32_t id;    // id
+- uint8_t rtr;    // request can identifier
+- uint8_t ext;    // extended can identifier
+- uint32_t id;    // can identifier
 
 **clearMask()**
 Clear the mask to receive all frames.
