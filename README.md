@@ -72,7 +72,7 @@ The mask and filter are **CAN_filter_t** type structures.
 - uint32_t id;    // can identifier
 
 **clearMask()**
-Clear the mask to receive all frames.
+Enable reception of all messages.
 
 **clearFilter()**
 Clear filter from 0 - 7.
