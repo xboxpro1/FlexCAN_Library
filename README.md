@@ -29,7 +29,7 @@ Please add parts you are using successfully with Teensy 3.1 to this list.
 Enable the CAN to start actively participating on the CANbus. Default speedindex is CAN_125KBPS.
 
 **connect(speedindex, check)**
-Enable the CAN to start actively participating on the CANbus with given speedindex. If check = 1 the device checks if there is frame available. If speedindex = 0, the device try an Auto Connect on the CANbus. Default (0, 0). See autoconnect.ino.
+Enable the CAN to start actively participating on the CANbus with given speedindex. If check = 1 the device checks if there is a frame available. If speedindex = 0, the device try an Auto Connect on the CANbus. Default (0, 0). See autoconnect.ino.
 Returns speedindex 1 - 18, 255 -> Error, CANbus not connected or speed is not available.
 
 **end()**
